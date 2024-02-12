@@ -19,8 +19,9 @@ We will use the positive and negative categories in the augmented General Inquir
 Note that first you will need to install the `quanteda.sentiment` package from GitHub
 
 ```{r, eval=FALSE}
+remotes::install_github("quanteda/quanteda.sentiment", force = TRUE)
 devtools::install_github("quanteda/quanteda.sentiment")
-devtools::install_github("quanteda/quanteda.dictionaries")
+devtools::install_github("kbenoit/quanteda.dictionaries") 
 ```
 
 First, we load the dictionary object. Note that we can apply the dictionary object directly (as we will see later), but for now let's learn how to do this if we had a list of positive and negative words on a different file.
@@ -69,9 +70,14 @@ And now start answering some descriptive questions...
 ```{r}
 # what is the average sentiment score?
 mean(tweets$score)
+# On average, tweets tend to be slightly more positive. The score is 0.477
+
 # what is the most positive and most negative tweet?
 tweets[which.max(tweets$score),]
 tweets[which.min(tweets$score),]
+# 
+
+
 # what is the proportion of positive, neutral, and negative tweets?
 tweets$sentiment <- "neutral"
 tweets$sentiment[tweets$score<0] <- "negative"
@@ -90,6 +96,8 @@ for (cand in candidates){
       round(mean(tweets$score[tweets$screen_name==cand]), 4)
     )
 }
+
+# Trump is the most posotive, while Hillary is the less positive one
 ```
 
 But what happens if we now run the analysis excluding a single word?
@@ -109,6 +117,7 @@ for (cand in candidates){
     )
 }
 
+# Trump drops to 0.3901, where others almost keep the same
 ```
 
 How would we normalize by text length? (Maybe not necessary here given that tweets have roughly the same length.)
@@ -163,7 +172,7 @@ dfm_sort(moral[,'authority.virtue']*100, margin='documents')
 
 ## Identifying most unique features of documents
 
-_Keyness_ is a measure of to what extent some features are specific to a (group of) document in comparison to the rest of the corpus, taking into account that some features may be too rare.
+*Keyness* is a measure of to what extent some features are specific to a (group of) document in comparison to the rest of the corpus, taking into account that some features may be too rare.
 
 ```{r}
 library(quanteda.textplots)
@@ -210,4 +219,3 @@ textstat_keyness(twdfm, target=docvars(twdfm)$datetime>"2016-05",
                       measure="chi2") %>% textplot_keyness()
 
 ```
-
