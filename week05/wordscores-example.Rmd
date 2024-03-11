@@ -11,8 +11,8 @@ The following code replicates the UK manifestos scaling example from LBG 2003.
 # loading data
 library(quanteda)
 library(quanteda.textmodels)
-# install.packages("devtools")
-# devtools::install_github("quanteda/quanteda.corpora")
+library(quanteda.corpora)
+
 
 data(data_corpus_ukmanifestos, package = "quanteda.corpora")
 # cleaning dataset
@@ -29,8 +29,9 @@ ws <- textmodel_wordscores(ukDfm, c(17.21, 5.35, 8.21, rep(NA, 3)))
 coef(ws)[c("law-abiding", "schools", "unemployment", "social")]
 
 # Now trying to predict the scores for all the manifestos
-predict(ws)
-# almost but not exactly!
+predict(ws) # all around middle point if not rescaled
+
+# almost but not exactly! rescale using lbg method to achieve more realsitic scores
 (pred <- predict(ws, newdata = ukDfm[4:6, ], rescaling = "lbg"))
 
 # with smoothing
