@@ -73,7 +73,7 @@ does_not_fit <- function(words, embedding_matrix = embeddings) {
   word_vectors <- embedding_matrix[words,]
   
   # Compute the mean of the vectors
-  mean_vector <- colSums(embedding_matrix[words,])
+  mean_vector <- colMeans(embedding_matrix[words,])
   
   # Compute similarities to the mean
   similarities_to_mean <- word_vectors%*%mean_vector
@@ -129,7 +129,6 @@ analogies <- function(a, b, c, top_n = 1, embedding_matrix = embeddings) {
 
 ### 5. Illustrations
 
-
 For a very niche term, can we still find sensible similar ones?
 
 ```{r}
@@ -151,13 +150,13 @@ does_not_fit(c("einstein", "bohr", "feynman", "fleming"))
 Who was not on the moon?
 
 ```{r}
-does_not_fit(c("armstrong", "moon", "hesse"))
+does_not_fit(c("armstrong", "aldrin", "einstein"))
 ```
 
 Who was not a writer?
 
 ```{r}
-does_not_fit(c("literature", "armstrong", "hesse"))
+does_not_fit(c("austen", "armstrong", "shakespeare"))
 ```
 
 
